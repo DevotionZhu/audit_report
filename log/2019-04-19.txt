@@ -1,0 +1,76 @@
+Fri, 19 Apr 2019 09:56:39 log.py[line:17] DEBUG 读取配置项发生了错误,mysql,dbname_sys
+Fri, 19 Apr 2019 09:56:39 log.py[line:20] ERROR No option 'dbname_sys' in section: 'mysql'
+Traceback (most recent call last):
+  File "D:\soft\python36\lib\configparser.py", line 789, in get
+    value = d[option]
+  File "D:\soft\python36\lib\collections\__init__.py", line 885, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+  File "D:\soft\python36\lib\collections\__init__.py", line 877, in __missing__
+    raise KeyError(key)
+KeyError: 'dbname_sys'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\myproj\audit\common\config_reader.py", line 22, in get
+    return self.conf.get(field,key)
+  File "D:\soft\python36\lib\configparser.py", line 792, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'dbname_sys' in section: 'mysql'
+Fri, 19 Apr 2019 09:57:31 log.py[line:17] DEBUG 读取配置项发生了错误,mysql,dbname_sys
+Fri, 19 Apr 2019 09:57:31 log.py[line:20] ERROR No option 'dbname_sys' in section: 'mysql'
+Traceback (most recent call last):
+  File "D:\soft\python36\lib\configparser.py", line 789, in get
+    value = d[option]
+  File "D:\soft\python36\lib\collections\__init__.py", line 885, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+  File "D:\soft\python36\lib\collections\__init__.py", line 877, in __missing__
+    raise KeyError(key)
+KeyError: 'dbname_sys'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\myproj\audit\common\config_reader.py", line 22, in get
+    return self.conf.get(field,key)
+  File "D:\soft\python36\lib\configparser.py", line 792, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'dbname_sys' in section: 'mysql'
+Fri, 19 Apr 2019 10:56:12 log.py[line:17] DEBUG 读取配置项发生了错误,mysql,dbname_sys
+Fri, 19 Apr 2019 10:56:12 log.py[line:20] ERROR No option 'dbname_sys' in section: 'mysql'
+Traceback (most recent call last):
+  File "D:\soft\python36\lib\configparser.py", line 789, in get
+    value = d[option]
+  File "D:\soft\python36\lib\collections\__init__.py", line 885, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+  File "D:\soft\python36\lib\collections\__init__.py", line 877, in __missing__
+    raise KeyError(key)
+KeyError: 'dbname_sys'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\myproj\audit\common\config_reader.py", line 22, in get
+    return self.conf.get(field,key)
+  File "D:\soft\python36\lib\configparser.py", line 792, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'dbname_sys' in section: 'mysql'
+Fri, 19 Apr 2019 11:13:04 log.py[line:17] DEBUG 读取配置项发生了错误,mysql,dbname_sys
+Fri, 19 Apr 2019 11:13:04 log.py[line:20] ERROR No option 'dbname_sys' in section: 'mysql'
+Traceback (most recent call last):
+  File "D:\soft\python36\lib\configparser.py", line 789, in get
+    value = d[option]
+  File "D:\soft\python36\lib\collections\__init__.py", line 885, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+  File "D:\soft\python36\lib\collections\__init__.py", line 877, in __missing__
+    raise KeyError(key)
+KeyError: 'dbname_sys'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\myproj\audit_report\common\config_reader.py", line 22, in get
+    return self.conf.get(field,key)
+  File "D:\soft\python36\lib\configparser.py", line 792, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'dbname_sys' in section: 'mysql'
