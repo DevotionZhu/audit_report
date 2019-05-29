@@ -34,11 +34,11 @@ class check():
         else:
             return "fail"
 
-    def zone(self, itemname):
-        return self.getsqlvalue.getValue_zoneId(itemname, self.zoneid, self.startT, self.endT)
+    def zone(self, field, itemname):
+        return self.getsqlvalue.getValue_zoneId(field, itemname, self.zoneid, self.startT, self.endT)
 
-    def dept(self, itemname):
-        return self.getsqlvalue.getValue_deptId(itemname, self.zoneid, self.deptid, self.startT, self.endT)
+    def dept(self, field, itemname):
+        return self.getsqlvalue.getValue_deptId(field, itemname, self.zoneid, self.deptid, self.startT, self.endT)
 
     def dis_workReportByOrg_ipt_zoneId(self):
         return self.getdisplay.getvalue_zoneId("审方工作统计按机构统计", "zoneId", "住院")
@@ -52,13 +52,16 @@ class check():
         name = 'self.{}'.format(self.dis_dimension[field])
         functionName = eval(name)
         self.disvalue = functionName()
+        if self.disvalue == "Nodata":
+            disvalue_new = 0
+        else:
         # 局部变量需要先定义再赋值
-        disvalue_new = ''
-        if itemKey not in self.confR.getitems_new(field):
-            disvalue_new = "Nodata"
+            disvalue_new = ''
+            if itemKey not in self.confR.getitems_new(field):
+                disvalue_new = "Nodata"
 
-        elif itemKey in self.confR.getitems_new(field):
-            disvalue_new = self.disvalue[itemKey]
+            elif itemKey in self.confR.getitems_new(field):
+                disvalue_new = self.disvalue[itemKey]
         return disvalue_new
 
     # 获取报表sql统计值
@@ -66,7 +69,7 @@ class check():
 
         name = 'self.{}'.format(self.sql_dimension[field])
         functionName = eval(name)
-        self.sqlvalue = functionName(itemname)
+        self.sqlvalue = functionName(field,itemname)
         if self.sqlvalue == None:  # 当SQL查询结果为None时
             self.sqlvalue_new = "The SQL's result is None"
 

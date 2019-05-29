@@ -58,7 +58,10 @@ class getDisplayValue():
         self.params = json.dumps(self.param)  # 将json对象转化为字符串
         # response = self.session.post(self.addr, params=json.dumps(self.params, ensure_ascii=False), headers=self.headers)
         response = self.session.post(self.addr, data=self.params.encode('utf-8'), headers=self.headers).json()
-        data_zoneId = response['data']['recordList'][0]
+        if response['data']['recordList'] == []:
+            data_zoneId = "Nodata"
+        else:
+            data_zoneId = response['data']['recordList'][0]
         return data_zoneId
 
     def getvalue_deptId(self, apiname, groupField, source):
@@ -83,8 +86,12 @@ class getDisplayValue():
         self.params = json.dumps(self.param)  # 将json对象转化为字符串
         # response = self.session.post(self.addr, params=json.dumps(self.params, ensure_ascii=False), headers=self.headers)
         response = self.session.post(self.addr, data=self.params.encode('utf-8'), headers=self.headers).json()
-        data_deptId = response['data']['recordList'][0]
+        if response['data']['recordList'] == []:
+            data_deptId = "Nodata"
+        else:
+            data_deptId = response['data']['recordList'][0]
         return data_deptId
+        print(response)
 
 
 if __name__ == "__main__":
