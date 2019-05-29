@@ -1,10 +1,10 @@
-from common.saveTestResult import getTestResult
+from common.save_test_result import getTestResult
 import pymysql
 from common.connect_db import connectDB
 from common.config_reader import configReader
 from common.log import mylog_except,mylog
-from common.getSqlValue import getSqlValue
-from common.getdisplay import configValue
+from common.get_sql_value import getSqlValue
+from common.get_display_value import configValue
 import os
 
 path=os.path.abspath('./config/index.ini')

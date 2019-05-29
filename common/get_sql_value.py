@@ -19,13 +19,13 @@ class getSqlValue():
         self.confR = configReader(path)
         # self.ipt_work = self.confR.conf.items('workReportByOrg_ipt_zoneId')
 
-    def getValue_zoneId(self, itemname, zoneid, startT, endT):
-        self.sql = self.confR.get("workReportByOrg_ipt_zoneId", itemname)
+    def getValue_zoneId(self, field,itemname, zoneid, startT, endT):
+        self.sql = self.confR.get(field, itemname)
         sqlvalue = self.conndb.executeSQL_zoneid_one(self.cur, self.sql, zoneid, startT, endT)
         return sqlvalue
 
-    def getValue_deptId(self, itemname, zoneid, deptid, startT, endT):
-        self.sql = self.confR.get("workReportByOrg_ipt_deptId", itemname)
+    def getValue_deptId(self, field,itemname, zoneid, deptid, startT, endT):
+        self.sql = self.confR.get(field, itemname)
         sqlvalue = self.conndb.executeSQL_deptid_one(self.cur, self.sql, zoneid, deptid, startT, endT)
         return sqlvalue
 

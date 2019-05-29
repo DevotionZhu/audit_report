@@ -1,7 +1,7 @@
 from common.config_reader import configReader
-from common.saveTestResult import getTestResult
-from common.getSqlValue import getSqlValue
-from common.getdisplay import getDisplayValue
+from common.save_test_result import getTestResult
+from common.get_sql_value import getSqlValue
+from common.get_display_value import getDisplayValue
 import json, os
 
 path = os.path.abspath('./config/index.ini')
@@ -92,16 +92,6 @@ class check():
                 self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                 self.saveTR.writeData(self.itemname, self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                 count += 1
-        # # 创建第二个worksheet
-        # self.saveTR.createSheet(self.fields[1])
-        # count = 1
-        # for itemkey in self.confR.getitems_new(self.fields[1]):
-        #     self.disvalue_f = self.getDisValue(itemkey, self.fields[1])
-        #     self.sqlvalue_f = self.getItemsSql(itemkey, self.fields[1])
-        #     self.itemname = itemkey
-        #     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
-        #     self.saveTR.writeData(self.itemname, self.disvalue_f, self.sqlvalue_f, self.rlt, count)
-        #     count += 1
         self.saveTR.closexlsx()
 
 

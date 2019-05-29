@@ -1,7 +1,7 @@
 from common.config_reader import configReader
-from common.saveTestResult import getTestResult
-from common.getSqlValue import getSqlValue
-from common.getdisplay import getDisplayValue
+from common.save_test_result import getTestResult
+from common.get_sql_value import getSqlValue
+from common.get_display_value import getDisplayValue
 import json, os
 
 path = os.path.abspath('./config/index.ini')
