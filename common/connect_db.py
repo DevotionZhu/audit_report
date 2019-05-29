@@ -45,7 +45,6 @@ class connectDB():
 #执行的SQL语句传入的值是机构，开始时间，结束时间
     def executeSQL_zoneid_one(self,cur,sql,zoneid,startT,endT):
             cur.execute(sql, (zoneid, startT, endT))
-            print(sql,zoneid,startT,endT)
             return cur.fetchone()[0]
 
 #执行的SQL语句传入的值是机构，开始时间，结束时间，机构，开始时间，结束时间（用于统计全院的指标数据）

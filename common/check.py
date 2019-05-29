@@ -9,27 +9,23 @@ path = os.path.abspath('./config/index.ini')
 
 class check():
     def __init__(self):
-        self.reportName = '统计报表'
+        self.fields = ['workReportByOrg_ipt_zoneId', 'workReportByOrg_ipt_deptId']
         # 从配置文件中获取sql配置项
         self.confR = configReader(path)
-        self.itemnames = self.confR.getitems_new('ipt_workReportByOrg')
-        print(self.itemnames)
+        # self.itemnames_ipt_zoneId = self.confR.getitems_new('workReportByOrg_ipt_zoneId')
+        # print(self.itemnames_ipt_zoneId)
         # 获取报表页面显示值的类
         self.getdisplay = getDisplayValue()
-        self.getdv = self.getdisplay.getvalue()
-        print(self.getdv.keys)
-        # 从配置文件中获取sql中所需变量：zoneid、startT、endT
-        self.zoneid = self.confR.getint("constant", "zoneid")
-        print(self.zoneid)
-        self.startT = self.confR.get("constant", "startT")
-        print(self.startT)
-        self.endT = self.confR.get("constant", "endT")
-
         # 获取sql值的类
         self.getsqlvalue = getSqlValue()
-
-        # 保存测试结果
-        self.saveTR = getTestResult(self.reportName)
+        # 从配置文件中获取sql中所需变量：zoneid、deptid、startT、endT和页面展示所需变量：startT、endT
+        self.zoneid = self.confR.getint("constant", "zoneid")
+        self.deptid = self.confR.get("constant", "deptid")
+        self.startT = self.confR.get("constant", "startT")
+        self.endT = self.confR.get("constant", "endT")
+        self.sql_dimension = {"workReportByOrg_ipt_zoneId": "zone", "workReportByOrg_ipt_deptId": "dept"}
+        self.dis_dimension = {"workReportByOrg_ipt_zoneId": "dis_workReportByOrg_ipt_zoneId",
+                              "workReportByOrg_ipt_deptId": "dis_workReportByOrg_ipt_deptId"}
 
     # 判断页面展示值与sql值是否相等
     def isEqual(self, displayvalue, sqlvalue):
@@ -38,47 +34,76 @@ class check():
         else:
             return "fail"
 
-    # 获取报表中的sql值
-    def getItemsSql(self, itemname):
-        self.sqlvalue = self.getsqlvalue.getValue(itemname, self.zoneid, self.startT, self.endT)
-        if self.sqlvalue == None:  # 当SQL查询结果为None时
-            self.sqlvalue_new = "The SQL's result is None"
-        else:
-            self.sqlvalue_new = self.sqlvalue
-        return self.sqlvalue_new
+    def zone(self, itemname):
+        return self.getsqlvalue.getValue_zoneId(itemname, self.zoneid, self.startT, self.endT)
+
+    def dept(self, itemname):
+        return self.getsqlvalue.getValue_deptId(itemname, self.zoneid, self.deptid, self.startT, self.endT)
+
+    def dis_workReportByOrg_ipt_zoneId(self):
+        return self.getdisplay.getvalue_zoneId("审方工作统计按机构统计", "zoneId", "住院")
+
+    def dis_workReportByOrg_ipt_deptId(self):
+        return self.getdisplay.getvalue_deptId("审方工作统计按机构统计", "deptId", "住院")
 
     # 获取报表页面display值
-    def getDisValue(self, itemKey):
+    def getDisValue(self, itemKey, field):
+
+        name = 'self.{}'.format(self.dis_dimension[field])
+        functionName = eval(name)
+        self.disvalue = functionName()
         # 局部变量需要先定义再赋值
         disvalue_new = ''
-        if itemKey not in self.itemnames:
+        if itemKey not in self.confR.getitems_new(field):
             disvalue_new = "Nodata"
 
-        elif itemKey in self.itemnames:
-                disvalue_new = self.getdv[itemKey]
-        return disvalue_new, itemKey
+        elif itemKey in self.confR.getitems_new(field):
+            disvalue_new = self.disvalue[itemKey]
+        return disvalue_new
+
+    # 获取报表sql统计值
+    def getItemsSql(self, itemname, field):
+
+        name = 'self.{}'.format(self.sql_dimension[field])
+        functionName = eval(name)
+        self.sqlvalue = functionName(itemname)
+        if self.sqlvalue == None:  # 当SQL查询结果为None时
+            self.sqlvalue_new = "The SQL's result is None"
+
+        else:
+            self.sqlvalue_new = self.sqlvalue
+
+        return self.sqlvalue_new
 
     # 执行报表中统计的验证并输出测试结果
     def executeCheck(self):
+        # 保存测试结果
+        self.saveTR = getTestResult('审方工作统计')
         # 创建excel文件
         self.saveTR.createXlsx()
-        self.saveTR.writeColName()
-        count = 1
-
-        for itemkey in self.itemnames:
-            # self.disvalue_f = self.getDisValue(itemkey)
-            self.disvalue_f = self.getdv[itemkey]
-            self.sqlvalue_f = self.getItemsSql(itemkey)
-            self.itemname = itemkey
-            self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
-            # 将内容打印到日志里面
-            # self.content=self.rlt+","+self.itemname+","+str(self.esvalue_f)+','+str(self.sqlvalue_f)
-            # mylog(self.content)
-            self.saveTR.writeData(self.itemname, self.disvalue_f, self.sqlvalue_f, self.rlt, count)
-            count += 1
+        for i in range(len(self.fields)):
+            # 创建第一个worksheet
+            self.saveTR.createSheet(self.fields[i])
+            count = 1
+            for itemkey in self.confR.getitems_new(self.fields[i]):
+                self.disvalue_f = self.getDisValue(itemkey, self.fields[i])
+                self.sqlvalue_f = self.getItemsSql(itemkey, self.fields[i])
+                self.itemname = itemkey
+                self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                self.saveTR.writeData(self.itemname, self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                count += 1
+        # # 创建第二个worksheet
+        # self.saveTR.createSheet(self.fields[1])
+        # count = 1
+        # for itemkey in self.confR.getitems_new(self.fields[1]):
+        #     self.disvalue_f = self.getDisValue(itemkey, self.fields[1])
+        #     self.sqlvalue_f = self.getItemsSql(itemkey, self.fields[1])
+        #     self.itemname = itemkey
+        #     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+        #     self.saveTR.writeData(self.itemname, self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+        #     count += 1
         self.saveTR.closexlsx()
 
 
 if __name__ == '__main__':
     c = check()
-    print(c.itemnames)
