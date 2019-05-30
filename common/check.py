@@ -12,8 +12,6 @@ class check():
         self.fields = ['workReportByOrg_ipt_zoneId', 'workReportByOrg_ipt_deptId']
         # 从配置文件中获取sql配置项
         self.confR = configReader(path)
-        # self.itemnames_ipt_zoneId = self.confR.getitems_new('workReportByOrg_ipt_zoneId')
-        # print(self.itemnames_ipt_zoneId)
         # 获取报表页面显示值的类
         self.getdisplay = getDisplayValue()
         # 获取sql值的类
