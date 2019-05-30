@@ -6,7 +6,6 @@ import json, os
 
 path = os.path.abspath('./config/index.ini')
 
-
 class check():
     def __init__(self,field):
         self.reportName = '审方工作统计'

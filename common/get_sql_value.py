@@ -29,6 +29,11 @@ class getSqlValue():
         sqlvalue = self.conndb.executeSQL_deptid_one(self.cur, self.sql, zoneid, deptid, startT, endT)
         return sqlvalue
 
+    def getValue_phar(self, field,itemname, audit_doctor_id, startT, endT):
+        self.sql = self.confR.get(field, itemname)
+        sqlvalue = self.conndb.executeSQL_phar(self.cur, self.sql, audit_doctor_id, startT, endT)
+        return sqlvalue
+
 
 if __name__ == '__main__':
     vs = getSqlValue()

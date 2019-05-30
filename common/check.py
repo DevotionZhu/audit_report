@@ -9,7 +9,7 @@ path = os.path.abspath('./config/index.ini')
 
 class check():
     def __init__(self):
-        self.fields = ['workReportByOrg_ipt_zoneId', 'workReportByOrg_ipt_deptId']
+        self.fields = ['workReportByOrg_ipt_zoneId', 'workReportByOrg_ipt_deptId', 'workReportByPhar_ipt']
         # 从配置文件中获取sql配置项
         self.confR = configReader(path)
         # 获取报表页面显示值的类
@@ -19,11 +19,13 @@ class check():
         # 从配置文件中获取sql中所需变量：zoneid、deptid、startT、endT和页面展示所需变量：startT、endT
         self.zoneid = self.confR.getint("constant", "zoneid")
         self.deptid = self.confR.get("constant", "deptid")
+        self.audit_doctor_id = self.confR.get("constant", "audit_doctor_id")
         self.startT = self.confR.get("constant", "startT")
         self.endT = self.confR.get("constant", "endT")
-        self.sql_dimension = {"workReportByOrg_ipt_zoneId": "zone", "workReportByOrg_ipt_deptId": "dept"}
+        self.sql_dimension = {"workReportByOrg_ipt_zoneId": "zone", "workReportByOrg_ipt_deptId": "dept","workReportByPhar_ipt": "phar"}
         self.dis_dimension = {"workReportByOrg_ipt_zoneId": "dis_workReportByOrg_ipt_zoneId",
-                              "workReportByOrg_ipt_deptId": "dis_workReportByOrg_ipt_deptId"}
+                              "workReportByOrg_ipt_deptId": "dis_workReportByOrg_ipt_deptId",
+                              "workReportByPhar_ipt": "dis_workReportByOrg_phar"}
 
     # 判断页面展示值与sql值是否相等
     def isEqual(self, displayvalue, sqlvalue):
@@ -38,11 +40,17 @@ class check():
     def dept(self, field, itemname):
         return self.getsqlvalue.getValue_deptId(field, itemname, self.zoneid, self.deptid, self.startT, self.endT)
 
+    def phar(self,field,itemname):
+        return self.getsqlvalue.getValue_phar(field, itemname, self.audit_doctor_id, self.startT, self.endT)
+
     def dis_workReportByOrg_ipt_zoneId(self):
         return self.getdisplay.getvalue_zoneId("审方工作统计按机构统计", "zoneId", "住院")
 
     def dis_workReportByOrg_ipt_deptId(self):
         return self.getdisplay.getvalue_deptId("审方工作统计按机构统计", "deptId", "住院")
+
+    def dis_workReportByOrg_phar(self):
+        return self.getdisplay.getvalue_auditDoctorId("审方工作统计按药师统计", "auditDoctorId", "住院")
 
     # 获取报表页面display值
     def getDisValue(self, itemKey, field):
@@ -79,7 +87,7 @@ class check():
     # 执行报表中统计的验证并输出测试结果
     def executeCheck(self):
         # 保存测试结果
-        self.saveTR = getTestResult('审方工作统计')
+        self.saveTR = getTestResult('统计报表')
         # 创建excel文件
         self.saveTR.createXlsx()
         for i in range(len(self.fields)):

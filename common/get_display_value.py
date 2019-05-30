@@ -15,12 +15,11 @@ class getDisplayValue():
         self.zoneid = self.cfR.get('constant', 'zoneid')
         self.inwardid = self.cfR.get('constant', 'inwardid')
         self.deptid = self.cfR.get('constant', 'deptid')
+        self.audit_doctor_id = self.cfR.get('constant', 'audit_doctor_id')
         self.end = self.cfR.get('constant', 'endT')
         self.endT = int(time.mktime(time.strptime(self.end, "%Y-%m-%d %H:%M:%S"))) * 1000
-        print(self.endT)
         self.start = self.cfR.get('constant', 'startT')
         self.startT = int(time.mktime(time.strptime(self.start, "%Y-%m-%d %H:%M:%S"))) * 1000
-        print(self.startT)
         self.headers = {
             'Content-Type': "application/json",
         }
@@ -91,7 +90,34 @@ class getDisplayValue():
         else:
             data_deptId = response['data']['recordList'][0]
         return data_deptId
-        print(response)
+
+    def getvalue_auditDoctorId(self, apiname, groupField, source):
+        self.login()
+        self.url_auditcenter = self.cfR.get('url', 'auditcenter')
+        self.api = self.cfR.get('api', apiname)
+        self.addr = "{}/{}".format(self.url_auditcenter, self.api)
+        self.param = {"endTime": self.endT,
+                      "groupField": groupField,
+                      "order": "",
+                      "orderField": "",
+                      "page": 1,
+                      "pageSize": 20,
+                      "pharNameList": [self.audit_doctor_id],
+                      "source": source,
+                      "startTime": self.startT,
+                      "zoneIdAndDoctorsList": [],
+                      "zoneIdAndGroupsList": [],
+                      "zoneIdList": [],
+                      "zonedIdAndDeptsList": [],
+                      "zonedIdAndWardsList": []}
+        self.params = json.dumps(self.param)  # 将json对象转化为字符串
+        # response = self.session.post(self.addr, params=json.dumps(self.params, ensure_ascii=False), headers=self.headers)
+        response = self.session.post(self.addr, data=self.params.encode('utf-8'), headers=self.headers).json()
+        if response['data']['recordList'] == []:
+            data_auditDoctorId = "Nodata"
+        else:
+            data_auditDoctorId = response['data']['recordList'][0]
+        return data_auditDoctorId
 
 
 if __name__ == "__main__":
