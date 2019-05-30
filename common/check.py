@@ -23,9 +23,9 @@ class check():
         self.startT = self.confR.get("constant", "startT")
         self.endT = self.confR.get("constant", "endT")
         self.sql_dimension = {"workReportByOrg_ipt_zoneId": "zone", "workReportByOrg_ipt_deptId": "dept","workReportByPhar_ipt": "phar"}
-        self.dis_dimension = {"workReportByOrg_ipt_zoneId": "dis_workReportByOrg_ipt_zoneId",
-                              "workReportByOrg_ipt_deptId": "dis_workReportByOrg_ipt_deptId",
-                              "workReportByPhar_ipt": "dis_workReportByOrg_phar"}
+        self.dis_dimension = {"workReportByOrg_ipt_zoneId": "dis_zone",
+                              "workReportByOrg_ipt_deptId": "dis_dept",
+                              "workReportByPhar_ipt": "dis_phar"}
 
     # 判断页面展示值与sql值是否相等
     def isEqual(self, displayvalue, sqlvalue):
@@ -43,21 +43,21 @@ class check():
     def phar(self,field,itemname):
         return self.getsqlvalue.getValue_phar(field, itemname, self.audit_doctor_id, self.startT, self.endT)
 
-    def dis_workReportByOrg_ipt_zoneId(self):
-        return self.getdisplay.getvalue_zoneId("审方工作统计按机构统计", "zoneId", "住院")
+    def dis_zone(self,field):
+        return self.getdisplay.getvalue_zoneId(field)
 
-    def dis_workReportByOrg_ipt_deptId(self):
-        return self.getdisplay.getvalue_deptId("审方工作统计按机构统计", "deptId", "住院")
+    def dis_dept(self,field):
+        return self.getdisplay.getvalue_deptId(field)
 
-    def dis_workReportByOrg_phar(self):
-        return self.getdisplay.getvalue_auditDoctorId("审方工作统计按药师统计", "auditDoctorId", "住院")
+    def dis_phar(self,field):
+        return self.getdisplay.getvalue_auditDoctorId(field)
 
     # 获取报表页面display值
     def getDisValue(self, itemKey, field):
 
         name = 'self.{}'.format(self.dis_dimension[field])
         functionName = eval(name)
-        self.disvalue = functionName()
+        self.disvalue = functionName(field)
         if self.disvalue == "Nodata":
             disvalue_new = 0
         else:
@@ -94,10 +94,12 @@ class check():
             # 创建第一个worksheet
             self.saveTR.createSheet(self.fields[i])
             count = 1
-            for itemkey in self.confR.getitems_new(self.fields[i]):
-                self.disvalue_f = self.getDisValue(itemkey, self.fields[i])
-                self.sqlvalue_f = self.getItemsSql(itemkey, self.fields[i])
-                self.itemname = itemkey
+            # for itemkey in self.confR.getitems_new(self.fields[i]):
+            items = self.confR.getitems_new(self.fields[i])
+            for j in range(len(items)-3):
+                self.disvalue_f = self.getDisValue(items[j], self.fields[i])
+                self.sqlvalue_f = self.getItemsSql(items[j], self.fields[i])
+                self.itemname = items[j]
                 self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                 self.saveTR.writeData(self.itemname, self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                 count += 1

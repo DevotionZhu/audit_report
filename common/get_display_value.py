@@ -35,19 +35,21 @@ class getDisplayValue():
         self.session.post(self.addr, data=json.dumps(self.params), headers=self.headers)
 
     # 获取统计报表页面上的显示值
-    def getvalue_zoneId(self, apiname, groupField, source):
+    def getvalue_zoneId(self, field):
         self.login()
         self.url_auditcenter = self.cfR.get('url', 'auditcenter')
-        self.api = self.cfR.get('api', apiname)
+        self.api = self.cfR.get(field, 'api')
+        self.groupField = self.cfR.get(field, 'groupField')
+        self.source = self.cfR.get(field, 'source')
         self.addr = "{}/{}".format(self.url_auditcenter, self.api)
         self.param = {"endTime": self.endT,
-                      "groupField": groupField,
+                      "groupField": self.groupField,
                       "order": "",
                       "orderField": "",
                       "page": 1,
                       "pageSize": 20,
                       "pharNameList": [],
-                      "source": source,
+                      "source": self.source,
                       "startTime": self.startT,
                       "zoneIdAndDoctorsList": [],
                       "zoneIdAndGroupsList": [],
@@ -63,19 +65,21 @@ class getDisplayValue():
             data_zoneId = response['data']['recordList'][0]
         return data_zoneId
 
-    def getvalue_deptId(self, apiname, groupField, source):
+    def getvalue_deptId(self,field):
         self.login()
         self.url_auditcenter = self.cfR.get('url', 'auditcenter')
-        self.api = self.cfR.get('api', apiname)
+        self.api = self.cfR.get(field, 'api')
+        self.groupField = self.cfR.get(field, 'groupField')
+        self.source = self.cfR.get(field, 'source')
         self.addr = "{}/{}".format(self.url_auditcenter, self.api)
         self.param = {"endTime": self.endT,
-                      "groupField": groupField,
+                      "groupField": self.groupField,
                       "order": "",
                       "orderField": "",
                       "page": 1,
                       "pageSize": 20,
                       "pharNameList": [],
-                      "source": source,
+                      "source": self.source,
                       "startTime": self.startT,
                       "zoneIdAndDoctorsList": [],
                       "zoneIdAndGroupsList": [],
@@ -91,19 +95,21 @@ class getDisplayValue():
             data_deptId = response['data']['recordList'][0]
         return data_deptId
 
-    def getvalue_auditDoctorId(self, apiname, groupField, source):
+    def getvalue_auditDoctorId(self, field):
         self.login()
         self.url_auditcenter = self.cfR.get('url', 'auditcenter')
-        self.api = self.cfR.get('api', apiname)
+        self.api = self.cfR.get(field, 'api')
+        self.groupField = self.cfR.get(field, 'groupField')
+        self.source = self.cfR.get(field, 'source')
         self.addr = "{}/{}".format(self.url_auditcenter, self.api)
         self.param = {"endTime": self.endT,
-                      "groupField": groupField,
+                      "groupField": self.groupField,
                       "order": "",
                       "orderField": "",
                       "page": 1,
                       "pageSize": 20,
                       "pharNameList": [self.audit_doctor_id],
-                      "source": source,
+                      "source": self.source,
                       "startTime": self.startT,
                       "zoneIdAndDoctorsList": [],
                       "zoneIdAndGroupsList": [],
