@@ -90,8 +90,9 @@ class check():
         self.saveTR = getTestResult('统计报表')
         # 创建excel文件
         self.saveTR.createXlsx()
+        # 需要创建len(self.fields)个worksheet
         for i in range(len(self.fields)):
-            # 创建第一个worksheet
+            # 创建第i个worksheet
             self.saveTR.createSheet(self.fields[i])
             count = 1
             # for itemkey in self.confR.getitems_new(self.fields[i]):
