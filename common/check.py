@@ -9,7 +9,7 @@ path = os.path.abspath('./config/index.ini')
 
 class check():
     def __init__(self):
-        self.fields = ['workReportByOrg_ipt_zoneId', 'workReportByOrg_ipt_deptId', 'workReportByPhar_ipt']
+        self.fields = ['workReportByOrg_ipt_zoneId', 'workReportByOrg_ipt_deptId']
         # 从配置文件中获取sql配置项
         self.confR = configReader(path)
         # 获取报表页面显示值的类
@@ -22,10 +22,10 @@ class check():
         self.audit_doctor_id = self.confR.get("constant", "audit_doctor_id")
         self.startT = self.confR.get("constant", "startT")
         self.endT = self.confR.get("constant", "endT")
-        self.sql_dimension = {"workReportByOrg_ipt_zoneId": "zone", "workReportByOrg_ipt_deptId": "dept","workReportByPhar_ipt": "phar"}
+        self.sql_dimension = {"workReportByOrg_ipt_zoneId": "zone", "workReportByOrg_ipt_deptId": "dept"}
         self.dis_dimension = {"workReportByOrg_ipt_zoneId": "dis_zone",
-                              "workReportByOrg_ipt_deptId": "dis_dept",
-                              "workReportByPhar_ipt": "dis_phar"}
+                              "workReportByOrg_ipt_deptId": "dis_dept"
+                              }
 
     # 判断页面展示值与sql值是否相等
     def isEqual(self, displayvalue, sqlvalue):
@@ -40,16 +40,16 @@ class check():
     def dept(self, field, itemname):
         return self.getsqlvalue.getValue_deptId(field, itemname, self.zoneid, self.deptid, self.startT, self.endT)
 
-    def phar(self,field,itemname):
+    def phar(self, field, itemname):
         return self.getsqlvalue.getValue_phar(field, itemname, self.audit_doctor_id, self.startT, self.endT)
 
-    def dis_zone(self,field):
+    def dis_zone(self, field):
         return self.getdisplay.getvalue_zoneId(field)
 
-    def dis_dept(self,field):
+    def dis_dept(self, field):
         return self.getdisplay.getvalue_deptId(field)
 
-    def dis_phar(self,field):
+    def dis_phar(self, field):
         return self.getdisplay.getvalue_auditDoctorId(field)
 
     # 获取报表页面display值
@@ -58,15 +58,17 @@ class check():
         name = 'self.{}'.format(self.dis_dimension[field])
         functionName = eval(name)
         self.disvalue = functionName(field)
+        s = self.confR.getitems_new(field)
+        t = self.confR.get(field, 'ratio').split(",")
         if self.disvalue == "Nodata":
             disvalue_new = 0
         else:
-        # 局部变量需要先定义再赋值
+            # 局部变量需要先定义再赋值
             disvalue_new = ''
-            if itemKey not in self.confR.getitems_new(field):
+            if itemKey not in s + t:
                 disvalue_new = "Nodata"
 
-            elif itemKey in self.confR.getitems_new(field):
+            elif itemKey in s + t:
                 disvalue_new = self.disvalue[itemKey]
         return disvalue_new
 
@@ -75,7 +77,7 @@ class check():
 
         name = 'self.{}'.format(self.sql_dimension[field])
         functionName = eval(name)
-        self.sqlvalue = functionName(field,itemname)
+        self.sqlvalue = functionName(field, itemname)
         if self.sqlvalue == None:  # 当SQL查询结果为None时
             self.sqlvalue_new = "The SQL's result is None"
 
@@ -97,13 +99,29 @@ class check():
             count = 1
             # for itemkey in self.confR.getitems_new(self.fields[i]):
             items = self.confR.getitems_new(self.fields[i])
-            for j in range(len(items)-3):
+            for j in range(len(items) - 4):
                 self.disvalue_f = self.getDisValue(items[j], self.fields[i])
                 self.sqlvalue_f = self.getItemsSql(items[j], self.fields[i])
                 self.itemname = items[j]
                 self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                 self.saveTR.writeData(self.itemname, self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                 count += 1
+            for ratio in self.confR.get(self.fields[i], 'ratio').split(","):
+                if ratio == 'autoPassCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    self.sqlvalue_f = self.getItemsSql('autoPassCount', self.fields[i]) / self.getItemsSql('disCount',
+                                                                                                           self.fields[
+                                                                                                               i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('autoPassCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'timeoutPassCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    self.sqlvalue_f = self.getItemsSql('timeoutPassCount', self.fields[i]) / self.getItemsSql(
+                        'disCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('timeoutPassCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
         self.saveTR.closexlsx()
 
 
