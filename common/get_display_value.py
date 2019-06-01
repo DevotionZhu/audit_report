@@ -1,16 +1,13 @@
 # coding:utf8
 import requests
 import json
-from common.config_reader import configReader
-from common.connect_db import connectDB
+from config.config_reader import configReader
 import os, time
-
-path = os.path.abspath('./config/index.ini')
 
 
 class getDisplayValue():
     def __init__(self):
-        self.cfR = configReader(path)
+        self.cfR = configReader()
         self.url = self.cfR.get('url', 'url')
         self.zoneid = self.cfR.get('constant', 'zoneid')
         self.inwardid = self.cfR.get('constant', 'inwardid')
@@ -65,7 +62,7 @@ class getDisplayValue():
             data_zoneId = response['data']['recordList'][0]
         return data_zoneId
 
-    def getvalue_deptId(self,field):
+    def getvalue_deptId(self, field):
         self.login()
         self.url_auditcenter = self.cfR.get('url', 'auditcenter')
         self.api = self.cfR.get(field, 'api')

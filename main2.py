@@ -1,9 +1,6 @@
 from common.save_test_result import getTestResult
-import pymysql
 from common.connect_db import connectDB
-from common.config_reader import configReader
-from common.log import mylog_except,mylog
-from common.get_sql_value import getSqlValue
+from config.config_reader import configReader
 from common.get_display_value import configValue
 import os
 

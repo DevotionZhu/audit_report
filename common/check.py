@@ -1,17 +1,14 @@
-from common.config_reader import configReader
+from config.config_reader import configReader
 from common.save_test_result import getTestResult
 from common.get_sql_value import getSqlValue
 from common.get_display_value import getDisplayValue
-import json, os
-
-path = os.path.abspath('./config/index.ini')
 
 
 class check():
     def __init__(self):
         self.fields = ['workReportByOrg_ipt_zoneId', 'workReportByOrg_ipt_deptId']
         # 从配置文件中获取sql配置项
-        self.confR = configReader(path)
+        self.confR = configReader()
         # 获取报表页面显示值的类
         self.getdisplay = getDisplayValue()
         # 获取sql值的类

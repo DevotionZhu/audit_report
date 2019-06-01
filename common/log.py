@@ -1,11 +1,11 @@
-#coding:utf8
+# coding:utf8
 import logging
-import os,datetime
+import os, datetime
 
-
-curdate=datetime.datetime.now().strftime("%Y-%m-%d")
+curdate = datetime.datetime.now().strftime("%Y-%m-%d")
 # print(curdate)
-path="./log/{}.txt".format(curdate)
+path = "./log/{}.txt".format(curdate)
+
 
 def mylog(content):
     logging.basicConfig(level=logging.DEBUG,
@@ -15,6 +15,7 @@ def mylog(content):
                         filemode='a')
 
     logging.debug(content)
+
 
 def mylog_except(error):
     logging.exception(error)

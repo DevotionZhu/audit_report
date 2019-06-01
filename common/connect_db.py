@@ -1,15 +1,13 @@
 import os
 import pymysql
-from common.config_reader import configReader
+from config.config_reader import configReader
 from common.log import mylog, mylog_except
-
-path = os.path.abspath('./config/index.ini')
 
 
 class connectDB():
     def __init__(self):
 
-        self.dbconf = configReader(path)
+        self.dbconf = configReader()
         self.host = self.dbconf.get("mysql", "host")
         self.port = self.dbconf.getint("mysql", "port")
         self.username = self.dbconf.get("mysql", "username")
