@@ -24,10 +24,9 @@ class getDisplayValue():
     # 登录系统
     def login(self):
         self.session = requests.session()
-        self.api = self.cfR.get('api', 'login')
-        self.addr = "{}/{}".format(self.url, self.api)
-        self.name = self.cfR.get('url', 'username')
-        self.passwd = self.cfR.get('url', 'password')
+        self.addr = self.cfR.get('login', 'address') + '/api/v1/currentUser'
+        self.name = self.cfR.get('login', 'username')
+        self.passwd = self.cfR.get('login', 'password')
         self.params = {"name": self.name, "password": self.passwd}
         self.session.post(self.addr, data=json.dumps(self.params), headers=self.headers)
 
@@ -125,6 +124,7 @@ class getDisplayValue():
 
 if __name__ == "__main__":
     configV = getDisplayValue()
-    test = configV.getvalue_deptId('审方工作统计按机构统计', 'deptId', '住院')
+
+    test = configV.getvalue_deptId('workReportByOrg_ipt_deptId')
     print(test)
-    print(type(test))
+    # print(type(test))
