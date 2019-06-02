@@ -119,6 +119,42 @@ class check():
                     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                     self.saveTR.writeData('timeoutPassCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                     count += 1
+                elif ratio == 'disAuditCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    self.sqlvalue_f = self.getItemsSql('disAuditCount', self.fields[i]) / self.getItemsSql(
+                        'disCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('disAuditCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'disAuditPassCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    self.sqlvalue_f = self.getItemsSql('disAuditPassCount', self.fields[i]) / self.getItemsSql(
+                        'disAuditCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('disAuditPassCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'disAuditRejecCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    self.sqlvalue_f = self.getItemsSql('disAuditRejecCount', self.fields[i]) / self.getItemsSql(
+                        'disAuditCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('disAuditRejecCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'auditPassCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    self.sqlvalue_f = self.getItemsSql('auditPassCount', self.fields[i]) / self.getItemsSql(
+                        'auditCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('auditPassCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'auditRejectCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    self.sqlvalue_f = self.getItemsSql('auditRejectCount', self.fields[i]) / self.getItemsSql(
+                        'auditCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('auditRejectCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+
         self.saveTR.closexlsx()
 
 
