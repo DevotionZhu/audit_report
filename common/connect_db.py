@@ -44,6 +44,21 @@ class connectDB():
         cur.execute(sql, (zoneid, startT, endT))
         return cur.fetchone()[0]
 
+    # 执行的SQL语句传入的值是机构，科室，开始时间，结束时间
+    def executeSQL_deptid_one(self, cur, sql, zoneid, deptid, startT, endT):
+        cur.execute(sql, (zoneid, deptid, startT, endT))
+        return cur.fetchone()[0]
+
+    # 执行的SQL语句传入的值是机构，开方医生，开始时间，结束时间
+    def executeSQL_kfdocid_one(self, cur, sql, zoneid, kfdocid, startT, endT):
+        cur.execute(sql, (zoneid, kfdocid, startT, endT))
+        return cur.fetchone()[0]
+
+    # 执行的SQL语句传入的值是机构，病区，开始时间，结束时间
+    def executeSQL_inwardid_one(self, cur, sql, zoneid, inwardid, startT, endT):
+        cur.execute(sql, (zoneid, inwardid, startT, endT))
+        return cur.fetchone()[0]
+
     # 执行的SQL语句传入的值是机构，开始时间，结束时间，机构，开始时间，结束时间（用于统计全院的指标数据）
     def executeSQL_zoneid_two(self, cur, sql, zoneid, startT, endT):
         cur.execute(sql, (zoneid, startT, endT, zoneid, startT, endT))
@@ -68,11 +83,6 @@ class connectDB():
             print(error)
             self.rlt = 'no data'
         return self.rlt
-
-    # 执行的SQL语句传入的值是机构，科室，开始时间，结束时间
-    def executeSQL_deptid_one(self, cur, sql, zoneid, deptid, startT, endT):
-        cur.execute(sql, (zoneid, deptid, startT, endT))
-        return cur.fetchone()[0]
 
     # 执行的SQL语句传入的值是机构，科室，开始时间，结束时间，机构，科室，开始时间，结束时间
     def executeSQL_deptid_two(self, cur, sql, zoneid, deptid, startT, endT):

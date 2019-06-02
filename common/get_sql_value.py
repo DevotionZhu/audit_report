@@ -24,6 +24,16 @@ class getSqlValue():
         sqlvalue = self.conndb.executeSQL_deptid_one(self.cur, self.sql, zoneid, deptid, startT, endT)
         return sqlvalue
 
+    def getValue_kfDocId(self, field, itemname, zoneid, kfdocid, startT, endT):
+        self.sql = self.confR.get(field, itemname)
+        sqlvalue = self.conndb.executeSQL_kfdocid_one(self.cur, self.sql, zoneid, kfdocid, startT, endT)
+        return sqlvalue
+
+    def getValue_inWardId(self, field, itemname, zoneid, inwardid, startT, endT):
+        self.sql = self.confR.get(field, itemname)
+        sqlvalue = self.conndb.executeSQL_inwardid_one(self.cur, self.sql, zoneid, inwardid, startT, endT)
+        return sqlvalue
+
     def getValue_phar(self, field, itemname, audit_doctor_id, startT, endT):
         self.sql = self.confR.get(field, itemname)
         sqlvalue = self.conndb.executeSQL_phar(self.cur, self.sql, audit_doctor_id, startT, endT)
