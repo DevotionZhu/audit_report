@@ -8,18 +8,16 @@ class connectDB():
     def __init__(self):
 
         self.dbconf = configReader()
-        self.host = self.dbconf.get("mysql", "host")
-        self.port = self.dbconf.getint("mysql", "port")
-        self.username = self.dbconf.get("mysql", "username")
-        self.passwd = self.dbconf.get("mysql", "passwd")
-        # self.dbname_sys=self.dbconf.get("mysql","dbname_sys")
-        self.dbname_auditcenter = self.dbconf.get("mysql", "dbname_auditcenter")
-        self.charset = self.dbconf.get("mysql", "charset")
+        self.host = self.dbconf.get("db_auditcenter", "auditcenter_host")
+        self.port = self.dbconf.getint("db_auditcenter", "auditcenter_port")
+        self.username = self.dbconf.get("db_auditcenter", "auditcenter_username")
+        self.passwd = self.dbconf.get("db_auditcenter", "auditcenter_passwd")
+        self.dbname_auditcenter = self.dbconf.get("db_auditcenter", "auditcenter_db")
 
     def connect(self, dbname):
         try:
             return pymysql.Connect(host=self.host, port=self.port, user=self.username, passwd=self.passwd, db=dbname,
-                                   charset=self.charset)
+                                   charset='utf8')
         except Exception as error:
             mylog("数据库连接出错")
             mylog_except(error)
