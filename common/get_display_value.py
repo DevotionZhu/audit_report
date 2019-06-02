@@ -8,7 +8,6 @@ import os, time
 class getDisplayValue():
     def __init__(self):
         self.cfR = configReader()
-        self.url = self.cfR.get('url', 'url')
         self.zoneid = self.cfR.get('constant', 'zoneid')
         self.inwardid = self.cfR.get('constant', 'inwardid')
         self.deptid = self.cfR.get('constant', 'deptid')
