@@ -76,5 +76,29 @@ docCancelCountRatio          docCancelCount/rejectCount
 
 sql中门诊科室格式为：zoneid_deptid
 
+按问题类型统计
+
+/api/v1/sfReport/issueReportByType
+
+"analysisResultType": "抗菌药物诊断超常"
+"analysisType": "超常性分析"
+"endTime": 1559577599000
+"page": 1
+"pageSize": 20
+"source": "住院"
+"startTime": 1557849600000
+
+
+allGroupNum
+rejectGroupNum
+rejectGroupRatio
+docDoubleSignNum
+docDoubleSignRatio
+docModifyNum
+docModifyRatio
+
+rejectGroupNum/allGroupNum
+docDoubleSignNum/rejectGroupNum
+docModifyNum/rejectGroupNum
 
 
