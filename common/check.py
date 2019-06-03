@@ -18,7 +18,12 @@ class check():
                        'docDealReportByOrg_ipt_zoneId',
                        'docDealReportByOrg_ipt_deptId',
                        'docDealReportByOrg_ipt_kfDocId',
-                       'docDealReportByOrg_ipt_inWardId']
+                       'docDealReportByOrg_ipt_inWardId',
+                       'docDealReportByOrg_opt_zoneId',
+                       'docDealReportByOrg_opt_deptId',
+                       'docDealReportByOrg_opt_kfDocId',
+                       'docDealReportByPhar_ipt',
+                       'docDealReportByPhar_opt']
         # 从配置文件中获取sql配置项
         self.confR = configReader()
         # 获取报表页面显示值的类
@@ -47,7 +52,12 @@ class check():
                               "docDealReportByOrg_ipt_zoneId":"zone",
                               "docDealReportByOrg_ipt_deptId":"zydept",
                               "docDealReportByOrg_ipt_kfDocId":"kfdoc",
-                              "docDealReportByOrg_ipt_inWardId":"ward"
+                              "docDealReportByOrg_ipt_inWardId":"ward",
+                              "docDealReportByOrg_opt_zoneId":"zone",
+                              "docDealReportByOrg_opt_deptId":"mzdept",
+                              "docDealReportByOrg_opt_kfDocId":"kfdoc",
+                              "docDealReportByPhar_ipt":"phar",
+                              "docDealReportByPhar_opt":"phar"
                               }
         self.dis_dimension = {"workReportByOrg_ipt_zoneId": "dis_zone",
                               "workReportByOrg_ipt_deptId": "dis_dept",
@@ -61,7 +71,12 @@ class check():
                               "docDealReportByOrg_ipt_zoneId": "dis_zone",
                               "docDealReportByOrg_ipt_deptId":"dis_dept",
                               "docDealReportByOrg_ipt_kfDocId": "dis_kfdoc",
-                              "docDealReportByOrg_ipt_inWardId": "dis_ward"
+                              "docDealReportByOrg_ipt_inWardId": "dis_ward",
+                              "docDealReportByOrg_opt_zoneId": "dis_zone",
+                              "docDealReportByOrg_opt_deptId": "dis_dept",
+                              "docDealReportByOrg_opt_kfDocId": "dis_kfdoc",
+                              "docDealReportByPhar_ipt": "dis_phar",
+                              "docDealReportByPhar_opt": "dis_phar"
                               }
 
     # 判断页面展示值与sql值是否相等
