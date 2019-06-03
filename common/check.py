@@ -23,7 +23,9 @@ class check():
                        'docDealReportByOrg_opt_deptId',
                        'docDealReportByOrg_opt_kfDocId',
                        'docDealReportByPhar_ipt',
-                       'docDealReportByPhar_opt']
+                       'docDealReportByPhar_opt',
+                       'issueReportByType_ipt',
+                       'issueReportByType_opt']
         # 从配置文件中获取sql配置项
         self.confR = configReader()
         # 获取报表页面显示值的类
@@ -38,6 +40,8 @@ class check():
         self.kf_doc_id = self.confR.get('constant', 'kf_doc_id')
         self.in_ward_id = self.confR.get('constant', 'in_ward_id')
         self.audit_doctor_id = self.confR.get("constant", "audit_doctor_id")
+        self.analysis_type = self.confR.get("constant", "analysis_type")
+        self.analysis_result_type = self.confR.get("constant", "analysis_result_type")
         self.startT = self.confR.get("constant", "startT")
         self.endT = self.confR.get("constant", "endT")
         self.sql_dimension = {"workReportByOrg_ipt_zoneId": "zone",
@@ -57,7 +61,9 @@ class check():
                               "docDealReportByOrg_opt_deptId":"mzdept",
                               "docDealReportByOrg_opt_kfDocId":"kfdoc",
                               "docDealReportByPhar_ipt":"phar",
-                              "docDealReportByPhar_opt":"phar"
+                              "docDealReportByPhar_opt":"phar",
+                              "issueReportByType_ipt":"issue",
+                              "issueReportByType_opt": "issue"
                               }
         self.dis_dimension = {"workReportByOrg_ipt_zoneId": "dis_zone",
                               "workReportByOrg_ipt_deptId": "dis_dept",
@@ -76,7 +82,9 @@ class check():
                               "docDealReportByOrg_opt_deptId": "dis_dept",
                               "docDealReportByOrg_opt_kfDocId": "dis_kfdoc",
                               "docDealReportByPhar_ipt": "dis_phar",
-                              "docDealReportByPhar_opt": "dis_phar"
+                              "docDealReportByPhar_opt": "dis_phar",
+                              "issueReportByType_ipt": "dis_issue",
+                              "issueReportByType_opt": "dis_issue"
                               }
 
     # 判断页面展示值与sql值是否相等
@@ -104,6 +112,9 @@ class check():
     def phar(self, field, itemname):
         return self.getsqlvalue.getValue_phar(field, itemname, self.audit_doctor_id, self.startT, self.endT)
 
+    def issue(self, field, itemname):
+        return self.getsqlvalue.getValue_issue(field, itemname, self.analysis_result_type, self.startT, self.endT)
+
     def dis_zone(self, field):
         return self.getdisplay.getvalue_zoneId(field)
 
@@ -118,6 +129,9 @@ class check():
 
     def dis_phar(self, field):
         return self.getdisplay.getvalue_auditDoctorId(field)
+
+    def dis_issue(self, field):
+        return self.getdisplay.getvalue_issue(field)
 
     # 获取报表页面display值
     def getDisValue(self, itemKey, field):

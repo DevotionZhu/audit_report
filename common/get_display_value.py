@@ -14,6 +14,8 @@ class getDisplayValue():
         self.audit_doctor_id = self.cfR.get('constant', 'audit_doctor_id')
         self.kf_doc_id = self.cfR.get('constant', 'kf_doc_id')
         self.in_ward_id = self.cfR.get('constant', 'in_ward_id')
+        self.analysis_type = self.cfR.get('constant', 'analysis_type')
+        self.analysis_result_type = self.cfR.get('constant', 'analysis_result_type')
         self.end = self.cfR.get('constant', 'endT')
         self.endT = int(time.mktime(time.strptime(self.end, "%Y-%m-%d %H:%M:%S"))) * 1000
         self.start = self.cfR.get('constant', 'startT')
@@ -182,10 +184,30 @@ class getDisplayValue():
             data_auditDoctorId = response['data']['recordList'][0]
         return data_auditDoctorId
 
+    def getvalue_issue(self, field):
+        self.login()
+        self.url_auditcenter = self.cfR.get('url', 'auditcenter')
+        self.api = self.cfR.get(field, 'api')
+        self.source = self.cfR.get(field, 'source')
+        self.addr = "{}/{}".format(self.url_auditcenter, self.api)
+        self.param = {"analysisResultType": self.analysis_result_type,
+                      "analysisType": self.analysis_type,
+                      "endTime": self.endT,
+                      "page": 1,
+                      "pageSize": 20,
+                      "source": self.source,
+                      "startTime": self.startT}
+        self.params = json.dumps(self.param)  # 将json对象转化为字符串
+        # response = self.session.post(self.addr, params=json.dumps(self.params, ensure_ascii=False), headers=self.headers)
+        response = self.session.post(self.addr, data=self.params.encode('utf-8'), headers=self.headers).json()
+        if response['data']['recordList'] == []:
+            data_issue = "Nodata"
+        else:
+            data_issue = response['data']['recordList'][0]
+        return data_issue
 
 if __name__ == "__main__":
     configV = getDisplayValue()
-
     test = configV.getvalue_deptId('workReportByOrg_ipt_deptId')
     print(test)
     # print(type(test))

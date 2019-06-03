@@ -59,6 +59,11 @@ class connectDB():
         cur.execute(sql, (zoneid, inwardid, startT, endT))
         return cur.fetchone()[0]
 
+    # 执行的SQL语句传入的值是提示类型，开始时间，结束时间
+    def executeSQL_issue(self, cur, sql, analysis_result_type, startT, endT):
+        cur.execute(sql, (analysis_result_type, startT, endT))
+        return cur.fetchone()[0]
+
     # 执行的SQL语句传入的值是机构，开始时间，结束时间，机构，开始时间，结束时间（用于统计全院的指标数据）
     def executeSQL_zoneid_two(self, cur, sql, zoneid, startT, endT):
         cur.execute(sql, (zoneid, startT, endT, zoneid, startT, endT))
