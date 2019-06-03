@@ -10,7 +10,8 @@ class check():
                        'workReportByOrg_ipt_deptId',
                        'workReportByOrg_ipt_kfDocId',
                        'workReportByOrg_ipt_inWardId',
-                       "workReportByOrg_opt_zoneId"]
+                       'workReportByOrg_opt_zoneId',
+                       'workReportByOrg_opt_deptId']
         # 从配置文件中获取sql配置项
         self.confR = configReader()
         # 获取报表页面显示值的类
@@ -18,24 +19,28 @@ class check():
         # 获取sql值的类
         self.getsqlvalue = getSqlValue()
         # 从配置文件中获取sql中所需变量：zoneid、deptid、startT、endT和页面展示所需变量：startT、endT
-        self.zoneid = self.confR.getint("constant", "zoneid")
-        self.deptid = self.confR.get("constant", "deptid")
+        self.zoneid = self.confR.get("constant", "zoneid")
+        self.zydeptid = self.confR.get("constant", "zydeptid")
+        self.mdeptid = self.confR.get("constant", "mzdeptid")
+        self.mzdeptid = self.zoneid + '_' + self.mdeptid
         self.kf_doc_id = self.confR.get('constant', 'kf_doc_id')
         self.in_ward_id = self.confR.get('constant', 'in_ward_id')
         self.audit_doctor_id = self.confR.get("constant", "audit_doctor_id")
         self.startT = self.confR.get("constant", "startT")
         self.endT = self.confR.get("constant", "endT")
         self.sql_dimension = {"workReportByOrg_ipt_zoneId": "zone",
-                              "workReportByOrg_ipt_deptId": "dept",
+                              "workReportByOrg_ipt_deptId": "zydept",
                               "workReportByOrg_ipt_kfDocId":"kfdoc",
                               "workReportByOrg_ipt_inWardId":"ward",
-                              "workReportByOrg_opt_zoneId": "zone"
+                              "workReportByOrg_opt_zoneId": "zone",
+                              "workReportByOrg_opt_deptId": "mzdept"
                               }
         self.dis_dimension = {"workReportByOrg_ipt_zoneId": "dis_zone",
                               "workReportByOrg_ipt_deptId": "dis_dept",
                               "workReportByOrg_ipt_kfDocId": "dis_kfdoc",
                               "workReportByOrg_ipt_inWardId": "dis_ward",
-                              "workReportByOrg_opt_zoneId": "dis_zone"
+                              "workReportByOrg_opt_zoneId": "dis_zone",
+                              "workReportByOrg_opt_deptId": "dis_dept"
                               }
 
     # 判断页面展示值与sql值是否相等
@@ -48,8 +53,11 @@ class check():
     def zone(self, field, itemname):
         return self.getsqlvalue.getValue_zoneId(field, itemname, self.zoneid, self.startT, self.endT)
 
-    def dept(self, field, itemname):
-        return self.getsqlvalue.getValue_deptId(field, itemname, self.zoneid, self.deptid, self.startT, self.endT)
+    def zydept(self, field, itemname):
+        return self.getsqlvalue.getValue_zydeptId(field, itemname, self.zoneid, self.zydeptid, self.startT, self.endT)
+
+    def mzdept(self, field, itemname):
+        return self.getsqlvalue.getValue_mzdeptId(field, itemname, self.zoneid, self.mzdeptid, self.startT, self.endT)
 
     def kfdoc(self, field, itemname):
         return self.getsqlvalue.getValue_kfDocId(field, itemname, self.zoneid, self.kf_doc_id, self.startT, self.endT)
@@ -102,7 +110,8 @@ class check():
         functionName = eval(name)
         self.sqlvalue = functionName(field, itemname)
         if self.sqlvalue == None:  # 当SQL查询结果为None时
-            self.sqlvalue_new = "The SQL's result is None"
+            print("The SQL's result is None")
+            self.sqlvalue_new =  0
 
         else:
             self.sqlvalue_new = self.sqlvalue
@@ -189,6 +198,7 @@ class check():
                     else:
                         self.sqlvalue_f = self.getItemsSql('auditPassCount', self.fields[i]) / self.getItemsSql(
                         'auditCount', self.fields[i])
+
                     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                     self.saveTR.writeData('auditPassCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                     count += 1

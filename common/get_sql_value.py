@@ -19,9 +19,14 @@ class getSqlValue():
         sqlvalue = self.conndb.executeSQL_zoneid_one(self.cur, self.sql, zoneid, startT, endT)
         return sqlvalue
 
-    def getValue_deptId(self, field, itemname, zoneid, deptid, startT, endT):
+    def getValue_zydeptId(self, field, itemname, zoneid, zydeptid, startT, endT):
         self.sql = self.confR.get(field, itemname)
-        sqlvalue = self.conndb.executeSQL_deptid_one(self.cur, self.sql, zoneid, deptid, startT, endT)
+        sqlvalue = self.conndb.executeSQL_deptid_one(self.cur, self.sql, zoneid, zydeptid, startT, endT)
+        return sqlvalue
+
+    def getValue_mzdeptId(self, field, itemname, zoneid, mzdeptid, startT, endT):
+        self.sql = self.confR.get(field, itemname)
+        sqlvalue = self.conndb.executeSQL_deptid_one(self.cur, self.sql, zoneid, mzdeptid, startT, endT)
         return sqlvalue
 
     def getValue_kfDocId(self, field, itemname, zoneid, kfdocid, startT, endT):
