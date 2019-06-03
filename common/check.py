@@ -11,7 +11,10 @@ class check():
                        'workReportByOrg_ipt_kfDocId',
                        'workReportByOrg_ipt_inWardId',
                        'workReportByOrg_opt_zoneId',
-                       'workReportByOrg_opt_deptId']
+                       'workReportByOrg_opt_deptId',
+                       'workReportByOrg_opt_kfDocId',
+                       'workReportByPhar_ipt',
+                       'workReportByPhar_opt']
         # 从配置文件中获取sql配置项
         self.confR = configReader()
         # 获取报表页面显示值的类
@@ -33,14 +36,20 @@ class check():
                               "workReportByOrg_ipt_kfDocId":"kfdoc",
                               "workReportByOrg_ipt_inWardId":"ward",
                               "workReportByOrg_opt_zoneId": "zone",
-                              "workReportByOrg_opt_deptId": "mzdept"
+                              "workReportByOrg_opt_deptId": "mzdept",
+                              "workReportByOrg_opt_kfDocId": "kfdoc",
+                              "workReportByPhar_ipt":"phar",
+                              "workReportByPhar_opt":"phar"
                               }
         self.dis_dimension = {"workReportByOrg_ipt_zoneId": "dis_zone",
                               "workReportByOrg_ipt_deptId": "dis_dept",
                               "workReportByOrg_ipt_kfDocId": "dis_kfdoc",
                               "workReportByOrg_ipt_inWardId": "dis_ward",
                               "workReportByOrg_opt_zoneId": "dis_zone",
-                              "workReportByOrg_opt_deptId": "dis_dept"
+                              "workReportByOrg_opt_deptId": "dis_dept",
+                              "workReportByOrg_opt_kfDocId": "dis_kfdoc",
+                              "workReportByPhar_ipt": "dis_phar",
+                              "workReportByPhar_opt": "dis_phar"
                               }
 
     # 判断页面展示值与sql值是否相等

@@ -74,7 +74,7 @@ docCancelCountRatio          docCancelCount/rejectCount
 
 
 
-
+sql中门诊科室格式为：zoneid_deptid
 
 
 
