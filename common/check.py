@@ -322,6 +322,36 @@ class check():
                     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                     self.saveTR.writeData('docCancelCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                     count += 1
+                elif ratio == 'rejectGroupRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    if self.getItemsSql('allGroupNum', self.fields[i]) == 0:
+                        self.sqlvalue_f = 0
+                    else:
+                        self.sqlvalue_f = self.getItemsSql('rejectGroupNum', self.fields[i]) / self.getItemsSql(
+                            'allGroupNum', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('rejectGroupRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'docDoubleSignRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    if self.getItemsSql('allGroupNum', self.fields[i]) == 0:
+                        self.sqlvalue_f = 0
+                    else:
+                        self.sqlvalue_f = self.getItemsSql('docDoubleSignNum', self.fields[i]) / self.getItemsSql(
+                            'allGroupNum', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('docDoubleSignRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'docModifyRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    if self.getItemsSql('rejectGroupNum', self.fields[i]) == 0:
+                        self.sqlvalue_f = 0
+                    else:
+                        self.sqlvalue_f = self.getItemsSql('docModifyNum', self.fields[i]) / self.getItemsSql(
+                            'rejectGroupNum', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('docModifyRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
 
         self.saveTR.closexlsx()
 
