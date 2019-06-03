@@ -14,7 +14,11 @@ class check():
                        'workReportByOrg_opt_deptId',
                        'workReportByOrg_opt_kfDocId',
                        'workReportByPhar_ipt',
-                       'workReportByPhar_opt']
+                       'workReportByPhar_opt',
+                       'docDealReportByOrg_ipt_zoneId',
+                       'docDealReportByOrg_ipt_deptId',
+                       'docDealReportByOrg_ipt_kfDocId',
+                       'docDealReportByOrg_ipt_inWardId']
         # 从配置文件中获取sql配置项
         self.confR = configReader()
         # 获取报表页面显示值的类
@@ -33,13 +37,17 @@ class check():
         self.endT = self.confR.get("constant", "endT")
         self.sql_dimension = {"workReportByOrg_ipt_zoneId": "zone",
                               "workReportByOrg_ipt_deptId": "zydept",
-                              "workReportByOrg_ipt_kfDocId":"kfdoc",
-                              "workReportByOrg_ipt_inWardId":"ward",
+                              "workReportByOrg_ipt_kfDocId": "kfdoc",
+                              "workReportByOrg_ipt_inWardId": "ward",
                               "workReportByOrg_opt_zoneId": "zone",
                               "workReportByOrg_opt_deptId": "mzdept",
                               "workReportByOrg_opt_kfDocId": "kfdoc",
-                              "workReportByPhar_ipt":"phar",
-                              "workReportByPhar_opt":"phar"
+                              "workReportByPhar_ipt": "phar",
+                              "workReportByPhar_opt": "phar",
+                              "docDealReportByOrg_ipt_zoneId":"zone",
+                              "docDealReportByOrg_ipt_deptId":"zydept",
+                              "docDealReportByOrg_ipt_kfDocId":"kfdoc",
+                              "docDealReportByOrg_ipt_inWardId":"ward"
                               }
         self.dis_dimension = {"workReportByOrg_ipt_zoneId": "dis_zone",
                               "workReportByOrg_ipt_deptId": "dis_dept",
@@ -49,7 +57,11 @@ class check():
                               "workReportByOrg_opt_deptId": "dis_dept",
                               "workReportByOrg_opt_kfDocId": "dis_kfdoc",
                               "workReportByPhar_ipt": "dis_phar",
-                              "workReportByPhar_opt": "dis_phar"
+                              "workReportByPhar_opt": "dis_phar",
+                              "docDealReportByOrg_ipt_zoneId": "dis_zone",
+                              "docDealReportByOrg_ipt_deptId":"dis_dept",
+                              "docDealReportByOrg_ipt_kfDocId": "dis_kfdoc",
+                              "docDealReportByOrg_ipt_inWardId": "dis_ward"
                               }
 
     # 判断页面展示值与sql值是否相等
@@ -120,7 +132,7 @@ class check():
         self.sqlvalue = functionName(field, itemname)
         if self.sqlvalue == None:  # 当SQL查询结果为None时
             print("The SQL's result is None")
-            self.sqlvalue_new =  0
+            self.sqlvalue_new = 0
 
         else:
             self.sqlvalue_new = self.sqlvalue
@@ -150,76 +162,136 @@ class check():
             for ratio in self.confR.get(self.fields[i], 'ratio').split(","):
                 if ratio == 'autoPassCountRatio':
                     self.disvalue_f = self.getDisValue(ratio, self.fields[i])
-                    if self.getItemsSql('disCount',self.fields[i]) == 0:
+                    if self.getItemsSql('disCount', self.fields[i]) == 0:
                         self.sqlvalue_f = 0
                     else:
-                        self.sqlvalue_f = self.getItemsSql('autoPassCount', self.fields[i]) / self.getItemsSql('disCount',
-                                                                                                           self.fields[
-                                                                                                               i])
+                        self.sqlvalue_f = self.getItemsSql('autoPassCount', self.fields[i]) / self.getItemsSql(
+                            'disCount',
+                            self.fields[
+                                i])
                     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                     self.saveTR.writeData('autoPassCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                     count += 1
-
                 elif ratio == 'timeoutPassCountRatio':
                     self.disvalue_f = self.getDisValue(ratio, self.fields[i])
-                    if self.getItemsSql('disCount',self.fields[i]) == 0:
+                    if self.getItemsSql('disCount', self.fields[i]) == 0:
                         self.sqlvalue_f = 0
                     else:
                         self.sqlvalue_f = self.getItemsSql('timeoutPassCount', self.fields[i]) / self.getItemsSql(
-                        'disCount', self.fields[i])
+                            'disCount', self.fields[i])
                     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                     self.saveTR.writeData('timeoutPassCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                     count += 1
                 elif ratio == 'disAuditCountRatio':
                     self.disvalue_f = self.getDisValue(ratio, self.fields[i])
-                    if self.getItemsSql('disCount',self.fields[i]) == 0:
+                    if self.getItemsSql('disCount', self.fields[i]) == 0:
                         self.sqlvalue_f = 0
                     else:
                         self.sqlvalue_f = self.getItemsSql('disAuditCount', self.fields[i]) / self.getItemsSql(
-                        'disCount', self.fields[i])
+                            'disCount', self.fields[i])
                     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                     self.saveTR.writeData('disAuditCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                     count += 1
                 elif ratio == 'disAuditPassCountRatio':
                     self.disvalue_f = self.getDisValue(ratio, self.fields[i])
-                    if self.getItemsSql('disAuditCount',self.fields[i]) == 0:
+                    if self.getItemsSql('disAuditCount', self.fields[i]) == 0:
                         self.sqlvalue_f = 0
                     else:
                         self.sqlvalue_f = self.getItemsSql('disAuditPassCount', self.fields[i]) / self.getItemsSql(
-                        'disAuditCount', self.fields[i])
+                            'disAuditCount', self.fields[i])
                     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                     self.saveTR.writeData('disAuditPassCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                     count += 1
                 elif ratio == 'disAuditRejecCountRatio':
                     self.disvalue_f = self.getDisValue(ratio, self.fields[i])
-                    if self.getItemsSql('disAuditCount',self.fields[i]) == 0:
+                    if self.getItemsSql('disAuditCount', self.fields[i]) == 0:
                         self.sqlvalue_f = 0
                     else:
                         self.sqlvalue_f = self.getItemsSql('disAuditRejecCount', self.fields[i]) / self.getItemsSql(
-                        'disAuditCount', self.fields[i])
+                            'disAuditCount', self.fields[i])
                     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                     self.saveTR.writeData('disAuditRejecCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                     count += 1
                 elif ratio == 'auditPassCountRatio':
                     self.disvalue_f = self.getDisValue(ratio, self.fields[i])
-                    if self.getItemsSql('auditCount',self.fields[i]) == 0:
+                    if self.getItemsSql('auditCount', self.fields[i]) == 0:
                         self.sqlvalue_f = 0
                     else:
                         self.sqlvalue_f = self.getItemsSql('auditPassCount', self.fields[i]) / self.getItemsSql(
-                        'auditCount', self.fields[i])
+                            'auditCount', self.fields[i])
 
                     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                     self.saveTR.writeData('auditPassCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                     count += 1
                 elif ratio == 'auditRejectCountRatio':
                     self.disvalue_f = self.getDisValue(ratio, self.fields[i])
-                    if self.getItemsSql('auditCount',self.fields[i]) == 0:
+                    if self.getItemsSql('auditCount', self.fields[i]) == 0:
                         self.sqlvalue_f = 0
                     else:
                         self.sqlvalue_f = self.getItemsSql('auditRejectCount', self.fields[i]) / self.getItemsSql(
-                        'auditCount', self.fields[i])
+                            'auditCount', self.fields[i])
                     self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
                     self.saveTR.writeData('auditRejectCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'rejectSignCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    if self.getItemsSql('rejectCount', self.fields[i]) == 0:
+                        self.sqlvalue_f = 0
+                    else:
+                        self.sqlvalue_f = self.getItemsSql('rejectSignCount', self.fields[i]) / self.getItemsSql(
+                            'rejectCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('rejectSignCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'rejectAlterCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    if self.getItemsSql('rejectCount', self.fields[i]) == 0:
+                        self.sqlvalue_f = 0
+                    else:
+                        self.sqlvalue_f = self.getItemsSql('rejectAlterCount', self.fields[i]) / self.getItemsSql(
+                            'rejectCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('rejectAlterCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'docDealCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    if self.getItemsSql('rejectCount', self.fields[i]) == 0:
+                        self.sqlvalue_f = 0
+                    else:
+                        self.sqlvalue_f = self.getItemsSql('docDealCount', self.fields[i]) / self.getItemsSql(
+                            'rejectCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('docDealCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'docSignCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    if self.getItemsSql('rejectCount', self.fields[i]) == 0:
+                        self.sqlvalue_f = 0
+                    else:
+                        self.sqlvalue_f = self.getItemsSql('docSignCount', self.fields[i]) / self.getItemsSql(
+                            'rejectCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('docSignCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'docAlterCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    if self.getItemsSql('rejectCount', self.fields[i]) == 0:
+                        self.sqlvalue_f = 0
+                    else:
+                        self.sqlvalue_f = self.getItemsSql('docAlterCount', self.fields[i]) / self.getItemsSql(
+                            'rejectCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('docAlterCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
+                    count += 1
+                elif ratio == 'docCancelCountRatio':
+                    self.disvalue_f = self.getDisValue(ratio, self.fields[i])
+                    if self.getItemsSql('rejectCount', self.fields[i]) == 0:
+                        self.sqlvalue_f = 0
+                    else:
+                        self.sqlvalue_f = self.getItemsSql('docCancelCount', self.fields[i]) / self.getItemsSql(
+                            'rejectCount', self.fields[i])
+                    self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                    self.saveTR.writeData('docCancelCountRatio', self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                     count += 1
 
         self.saveTR.closexlsx()
