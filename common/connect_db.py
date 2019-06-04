@@ -157,17 +157,3 @@ if __name__ == "__main__":
     connectDB = connectDB()
     conn = connectDB.connect(connectDB.dbname_auditcenter)
     cur = connectDB.getCursor(conn)
-    confr = configReader(path)
-    # sql=confr.get('projectsql',"disAuditCount")
-    # print(sql)
-    # rlt=cur.execute(sql)
-    # print(cur.fetchone()[0])
-    # e1=cur.execute(confr.get('projectsql',"disAuditCount"))
-    # disAuditCount = cur.fetchone()[0]
-    # print(disAuditCount)
-    # e2=cur.execute(confr.get('projectsql',"disAuditPassCount"))
-    # disAuditPassCount = cur.fetchone()[0]
-    # print(disAuditPassCount)
-    # e3=cur.execute(confr.get('projectsql',"disAuditRejecCount"))
-    # disAuditRejecCount = cur.fetchone()[0]
-    # print(disAuditRejecCount)

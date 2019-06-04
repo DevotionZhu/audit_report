@@ -2,7 +2,7 @@ from config.config_reader import configReader
 from common.save_test_result import getTestResult
 from common.get_sql_value import getSqlValue
 from common.get_display_value import getDisplayValue
-
+from common.my_log import Logger
 
 class check():
     def __init__(self):
@@ -28,6 +28,7 @@ class check():
                        'issueReportByType_opt']
         # 从配置文件中获取sql配置项
         self.confR = configReader()
+        self.log = Logger()
         # 获取报表页面显示值的类
         self.getdisplay = getDisplayValue()
         # 获取sql值的类
@@ -186,6 +187,9 @@ class check():
                 self.sqlvalue_f = self.getItemsSql(items[j], self.fields[i])
                 self.itemname = items[j]
                 self.rlt = self.isEqual(self.disvalue_f, self.sqlvalue_f)
+                if self.rlt == 'fail':
+                    content = self.fields[i] + self.itemname + str(self.disvalue_f) + str(self.sqlvalue_f) + 'fail'
+                    self.log.mylog(content)
                 self.saveTR.writeData(self.itemname, self.disvalue_f, self.sqlvalue_f, self.rlt, count)
                 count += 1
             for ratio in self.confR.get(self.fields[i], 'ratio').split(","):
