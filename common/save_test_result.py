@@ -9,7 +9,7 @@ import os, datetime
 curdate = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
 
-class getTestResult():
+class getTestResult:
     # 获取创建excel标名所需参数
     def __init__(self, reportName):
         self.reportName = reportName

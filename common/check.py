@@ -159,7 +159,7 @@ class check():
 
         name = 'self.{}'.format(self.sql_dimension[field])
         functionName = eval(name)
-        self.sqlvalue = functionName(field, itemname)
+        self.sqlvalue = functionName(field, itemname)  # 动态函数调用（通过函数名）
         if self.sqlvalue == None:  # 当SQL查询结果为None时
             print("The SQL's result is None")
             self.sqlvalue_new = 0
